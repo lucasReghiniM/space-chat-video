@@ -1,0 +1,34 @@
+.textContainer {
+    color: var(--white);
+    max-width: 114ch;
+    text-align: center;
+
+    h1{
+        font-weight: 700;
+        font-size: 32px;
+        margin-bottom: 16px;
+    }
+
+    h2{
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 24px;
+    }
+}
+
+.centralize {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: max-content;
+    width: 640px;
+    margin-top: 16px;
+}
