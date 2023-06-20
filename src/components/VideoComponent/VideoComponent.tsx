@@ -8,13 +8,14 @@ import Select from '../Select/Select';
 
 // ASSETS
 import { DotIcon, CameraIcon, MicrophoneIcon } from '../../styles/icons';
+import { usePeerContext } from '../../HOC/PeerContext';
 
 const VideoComponent: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
   const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
+  const { stream } = usePeerContext();
 
   useEffect(() => {
     const getMediaDevices = async () => {
@@ -59,6 +60,14 @@ const VideoComponent: React.FC = () => {
       }
     };
   }, []);
+
+  
+  useEffect(() => {
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
+
 
   const handleInputChange = async (event: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
