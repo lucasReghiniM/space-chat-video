@@ -1,0 +1,53 @@
+  .select-container {
+      display: flex;
+      align-items: center;
+      border: 1px solid white;
+      background-color: transparent;
+      width: max-content;
+      padding: 14px;
+      position: relative;
+      width: auto;
+
+      option {
+        background-color: #ffffff;
+        color: #212529;
+      }
+  }
+
+  /* Firefox */
+  .select-container select {
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    padding-right: 20px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Chrome e Safari */
+  .select-container select::-ms-expand {
+    display: none;
+  }
+
+  .select-container-arrow {
+    position: absolute;
+    right: 10px;
+    top: 34%;
+    width: 20px;
+    height: auto;
+    transition: all ease 0.3;
+  }
+  
+  .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .select {
+    border: none;
+    background-color: transparent;
+    color: white;
+    outline: none;
+  }
+  

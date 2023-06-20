@@ -1,5 +1,13 @@
 import React, { useRef, useEffect, ChangeEvent, useState } from 'react';
+
+// STYLES
 import './styles.scss'
+
+// COMPONENTS
+import Select from '../Select/Select';
+
+// ASSETS
+import { DotIcon, CameraIcon, MicrophoneIcon } from '../../styles/icons';
 
 const VideoComponent: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -60,18 +68,18 @@ const VideoComponent: React.FC = () => {
         const stream = videoRef.current.srcObject as MediaStream;
         const tracks = stream.getTracks();
 
-        tracks.forEach(track => {
-          if (track.kind === name) {
-            track.stop();
-          }
-        });
+        const trackToStop = tracks.find(track => track.kind === name);
+        if (trackToStop) {
+          trackToStop.stop();
+        }
 
         const newStream = await navigator.mediaDevices.getUserMedia({
           [name]: { deviceId: value },
         });
 
-        if (videoRef.current) {
-          videoRef.current.srcObject = newStream;
+        const newTrack = newStream.getTracks().find(track => track.kind === name);
+        if (newTrack) {
+          stream.addTrack(newTrack);
         }
       }
     } catch (error) {
@@ -84,33 +92,34 @@ const VideoComponent: React.FC = () => {
       <video ref={videoRef} autoPlay playsInline></video>
 
       <div className='iconContainer' onClick={() => setIsOpen(true)}>
-        X
+        <DotIcon />
       </div>
 
       <div className={`modal ${isOpen ? 'open' : ''}`}>
         <div className="modal-content">
-          <p>Devices</p>
-          <p onClick={() => setIsOpen(false)}>X</p>
-          <div>
-            <label htmlFor="audio-input">Microphone:</label>
-            <select id="audio-input" name="audio" onChange={handleInputChange}>
+          <div className="textContainer">
+            <p className='title'>Devices</p>
+            <span onClick={() => setIsOpen(false)}>X</span>
+          </div>
+
+          <div className='micContainer'>
+            <Select id="audio-input" name="audio" onChange={handleInputChange} icon={<MicrophoneIcon />}>
               {audioDevices.map(device => (
                 <option key={device.deviceId} value={device.deviceId}>
                   {device.label}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
-          <div>
-            <label htmlFor="video-input">Camera:</label>
-            <select id="video-input" name="video" onChange={handleInputChange}>
+          <div className='webcamContainer'>
+            <Select id="video-input" name="video" onChange={handleInputChange} icon={<CameraIcon />}>
               {videoDevices.map(device => (
                 <option key={device.deviceId} value={device.deviceId}>
                   {device.label}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
         </div>
       </div>

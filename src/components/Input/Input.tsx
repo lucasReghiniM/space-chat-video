@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.scss';
 
 interface InputProps {
-  icon: string;
+  icon: React.ReactNode;
   placeholder: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,7 +11,9 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ icon, placeholder, value, onChange }) => {
   return (
     <div className="input-container">
-      <img className="icon" src={icon} alt="Icon" />
+      <div className='icon'>
+        {icon}
+      </div>
       <input
         className="input"
         type="text"

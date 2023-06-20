@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 // STYLE
 import './styles.scss';
+
+// ASSETS
+import { IdIcon, UserIcon } from '../../styles/icons';
 
 // COMPONENTS
 import PageLayout from '../../components/PageLayout';
@@ -36,10 +39,10 @@ const Home: React.FC = () => {
   return (
     <PageLayout>
       <div className='centralize'>
-        <div className='textContainer'>
+        <div className='textContainerMain'>
           <h1>Welcome to Space Chat</h1>
           <h2>
-          Welcome to Space Chat, the ultimate video calling platform where you can connect with people from all corners of the galaxy!Join the interstellar conversation and experience the thrill of face-to-face interactions, no matter the distance.
+          Welcome to Space Chat, the ultimate video calling platform where you can connect with people from all corners of the galaxy! Join the interstellar conversation and experience the thrill of face-to-face interactions, no matter the distance.
           </h2>
         </div>
 
@@ -47,17 +50,20 @@ const Home: React.FC = () => {
 
         <div className="inputContainer">
           <Input 
-            icon={'icon'}
+            icon={<UserIcon />}
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <Input 
-            icon={'icon'}
+            icon={<IdIcon />}
             placeholder="Room id"
             value={roomId}
             onChange={(e) => setRoomId(e.target.value)}
           />
+        </div>
+
+        <div className="buttonContainer">
           <Button onClick={createRoom}>
             Create room
           </Button>

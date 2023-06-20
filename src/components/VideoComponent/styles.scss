@@ -15,6 +15,12 @@
     cursor: pointer;
 }
 
+.title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--white);
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -32,13 +38,14 @@
   }
   
   .modal-content {
-    background-color: white;
-    padding: 20px;
+    background-color: var(--background-blue);
+    border: 1px solid var(--white);
+    padding: 16px;
     border-radius: 8px;
     text-align: center;
 
-    width: 50%;
-    height: 50%;
+    width:auto;
+    height: 40%;
 }
 
 .container video {
@@ -46,4 +53,26 @@
     height: auto;
     object-fit: cover; 
     aspect-ratio: 16 / 9;
+}
+
+.micContainer {
+  margin-bottom: 18px;
+  width: 380px;
+}
+
+.webcamContainer {
+  width: 380px;
+}
+
+.textContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  span {
+    cursor: pointer;
+    color: var(--white);
+  }
+
+  padding: 4px 0 12px;
 }
