@@ -1,17 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 
 interface Props {
-  stream: MediaStream | null;
+  props: MediaStream | any;
 }
 
-const GuestVideoComponent: React.FC<Props> = ({ stream }) => {
+const GuestVideoComponent: React.FC<Props> = ({ props }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (stream && videoRef.current) {
-      videoRef.current.srcObject = stream;
-    }
-  }, [stream]);
+    props.peer.on("stream", (stream: any) => {
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    });
+  }, []);
 
   return <video ref={videoRef} autoPlay playsInline />;
 };

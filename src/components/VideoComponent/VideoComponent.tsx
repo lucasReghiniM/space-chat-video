@@ -89,7 +89,7 @@ const VideoComponent: React.FC = () => {
 
   return (
     <div className='container'>
-      <video ref={videoRef} autoPlay playsInline></video>
+      <video ref={videoRef} autoPlay playsInline muted></video>
 
       <div className='iconContainer' onClick={() => setIsOpen(true)}>
         <DotIcon />

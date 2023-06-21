@@ -45,6 +45,7 @@ io.on('connection', socket => {
       .map(userId => userNames[userId]);
 
     socket.emit('allUsers', usersInThisRoom);
+    socket.to(roomId).emit('userJoined', { name });
 
   });
 
