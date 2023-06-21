@@ -15,17 +15,37 @@ const io = socketIo(server, {
 
 let rooms = {};
 let userNames = {};
+let users = {};
 
 io.on('connection', socket => {
   let currentRoom = null;
 
   socket.on('join', ({ roomId, name }) => {
+    if (rooms[roomId] && rooms[roomId].length >= 2) {
+      socket.emit('roomFull');
+      return;
+    }
+
     currentRoom = roomId;
     socket.join(roomId);
     userNames[socket.id] = name;
+
     if (!rooms[roomId]) {
       rooms[roomId] = [];
     }
+
+    if (!users[roomId]) {
+      users[roomId] = []; 
+    }
+
+    users[roomId].push(socket.id);
+
+    const usersInThisRoom = users[roomId]
+      .filter(userId => userId !== socket.id)
+      .map(userId => userNames[userId]);
+
+    socket.emit('allUsers', usersInThisRoom);
+
   });
 
   socket.on('message', ({ roomId, message }) => {
@@ -39,7 +59,12 @@ io.on('connection', socket => {
 
   socket.on('videoSignal', ({ roomId, signal }) => {
     // Relay the video signal to all other users in the room except the sender
-    socket.to(roomId).emit('videoSignal', { signal });
+    socket.to(roomId).emit('userJoined', { signal, callerID: socket.id });
+  });
+  
+  socket.on('returningSignal', ({ roomId, signal, callerID }) => {
+    // Send the returning signal to the specified callerID in the specified room
+    socket.to(roomId).to(callerID).emit('receivingReturnedSignal', { signal, id: socket.id });
   });
 
   socket.on('disconnect', () => {

@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import { usePeerContext } from "../../HOC/PeerContext";
 import SimplePeer from "simple-peer";
 import VideoComponent from "../../components/VideoComponent/VideoComponent";
 
@@ -19,8 +18,6 @@ const ChatRoom = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const peersRef = useRef<MediaStream[]>([]);
-  const { peer, setPeer, stream, setStream } = usePeerContext();
 
   const { id } = useParams<Params>();
   const { name } = useLocation().state;
@@ -42,32 +39,6 @@ const ChatRoom = () => {
         setMessages((messages) => [...messages, messageObj]);
       });
 
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then(currentStream => {
-          setStream(currentStream);
-  
-          const newPeer = new SimplePeer({
-            initiator: id === socket.id,
-            stream: currentStream,
-          });
-  
-          newPeer.on('signal', data => {
-            socket.emit('signal', data);
-          });
-  
-          socket.on('signal', data => {
-            newPeer.signal(data);
-          });
-  
-          newPeer.on('stream', peerStream => {
-            peersRef.current = [...peersRef.current, peerStream];
-          });
-  
-          setPeer(newPeer);
-        })
-        .catch(error => {
-          console.error('Error accessing media devices.', error);
-        });
     }
   }, [socket, id]);
 
@@ -84,13 +55,6 @@ const ChatRoom = () => {
 
       <div className="videoContainer" style={{width: '40%'}}>
         <VideoComponent />
-        {peersRef.current.map((peerStream, index) => (
-          <video key={index} ref={ref => {
-            if (ref) {
-              ref.srcObject = peerStream;
-            }
-          }} autoPlay playsInline />
-        ))}
       </div>
 
       <div>

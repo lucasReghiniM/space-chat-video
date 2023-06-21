@@ -4,7 +4,6 @@ import {
   RouterProvider,
   } from "react-router-dom";
 import router from './routes';
-import { withPeerContext } from './HOC/PeerContext';
 
 function App() {
   return (
@@ -14,4 +13,4 @@ function App() {
   );
 }
 
-export default withPeerContext(App);
+export default App;
